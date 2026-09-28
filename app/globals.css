@@ -1,26 +1,245 @@
 @import "tailwindcss";
 
+@theme {
+  --color-inovix-bg: #1C1E26;
+  --color-inovix-darker: #14161C;
+  --color-inovix-card: #232631;
+  --color-inovix-card-hover: #2B2F3D;
+  --color-inovix-border: #2E3342;
+  --color-inovix-cyan: #22D3EE;
+  --color-inovix-cyan-bright: #2DD4E8;
+  --color-inovix-text: #F5F5F5;
+  --color-inovix-muted: #94A3B8;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0A0E16;
+  --foreground: #F5F5F5;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ========================================================================== */
+/* FIXED FULL-VIEWPORT FLUID MARBLE BACKGROUND WITH CHARCOAL/NAVY OVERLAY     */
+/* ========================================================================== */
+body {
+  background-color: #0A0E16;
+  color: #F5F5F5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-body-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* Layered semi-transparent charcoal/navy overlay over optimized fluid marble texture */
+  background-image: 
+    linear-gradient(rgba(10, 14, 22, 0.78), rgba(10, 14, 22, 0.84)),
+    url("/bg-fluid.webp");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll; /* Mobile fallback to prevent jitter */
+}
+
+/* Desktop: smooth fixed full-viewport background */
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Slow, subtle ambient zoom-drift animation (living fluid texture) */
+@keyframes fluidDrift {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate(-0.8%, -1%);
+  }
 }
+
+.animate-fluid-drift {
+  animation: fluidDrift 45s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fluid-drift {
+    animation: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-mono-data {
+  font-family: var(--font-mono), monospace;
+}
+
+/* Neon cyan glow tokens */
+.neon-glow-cyan {
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.35), 0 0 50px rgba(34, 211, 238, 0.15);
+}
+
+.neon-glow-cyan-sm {
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.25);
+}
+
+.neon-ring-pulse {
+  box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.6);
+  animation: neonPulse 2.4s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes neonPulse {
+  to {
+    box-shadow: 0 0 0 16px rgba(34, 211, 238, 0);
+  }
+}
+
+/* Subtle micro grid */
+.fintech-grid {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+}
+
+/* ========================================================================== */
+/* LIQUID GLASSMORPHISM DESIGN SYSTEM                                         */
+/* ========================================================================== */
+
+/* Base static liquid glass surface */
+.liquid-glass {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+}
+
+/* Interactive card surface with specular highlights, hover glow & fluid lift */
+.liquid-glass-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+    0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liquid-glass-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(34, 211, 238, 0.35);
+  background: rgba(15, 23, 42, 0.55);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+    0 8px 32px 0 rgba(0, 210, 255, 0.15),
+    0 24px 48px -12px rgba(0, 0, 0, 0.75);
+}
+
+/* Modal Liquid Glass Container */
+.liquid-glass-modal {
+  position: relative;
+  background: rgba(11, 15, 25, 0.75);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 60px rgba(34, 211, 238, 0.14),
+    0 32px 80px rgba(0, 0, 0, 0.85);
+  border-radius: 1.5rem;
+}
+
+/* Charcoal Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0E16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2E3342;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #22D3EE;
+}
+
+/* ========================================================================== */
+/* CUSTOM BUDGET RANGE SLIDER                                                 */
+/* ========================================================================== */
+input[type="range"].budget-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"].budget-range-slider:focus {
+  outline: none;
+}
+
+input[type="range"].budget-range-slider::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+
+input[type="range"].budget-range-slider::-moz-range-track {
+  background: transparent;
+  height: 100%;
+}
+
+input[type="range"].budget-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: #22D3EE;
+  background-image: radial-gradient(circle at 35% 35%, #E0F2FE 0%, #22D3EE 65%, #0284C7 100%);
+  border: 3px solid #0B0F17;
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.85), 0 0 28px rgba(59, 130, 246, 0.45);
+  cursor: grab;
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+}
+
+input[type="range"].budget-range-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: #22D3EE;
+  background-image: radial-gradient(circle at 35% 35%, #E0F2FE 0%, #22D3EE 65%, #0284C7 100%);
+  border: 3px solid #0B0F17;
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.85), 0 0 28px rgba(59, 130, 246, 0.45);
+  cursor: grab;
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+}
+
+input[type="range"].budget-range-slider::-webkit-slider-thumb:hover,
+input[type="range"].budget-range-slider::-moz-range-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 22px rgba(34, 211, 238, 1), 0 0 36px rgba(59, 130, 246, 0.7);
+}
+
+input[type="range"].budget-range-slider:active::-webkit-slider-thumb,
+input[type="range"].budget-range-slider:active::-moz-range-thumb {
+  cursor: grabbing;
+  transform: scale(1.26);
+  box-shadow: 0 0 25px rgba(34, 211, 238, 1), 0 0 40px rgba(59, 130, 246, 0.85);
+}
+

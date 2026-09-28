@@ -9,9 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.31.2",
+    "framer-motion": "^13.4.4",
+    "lucide-react": "^1.48.0",
     "next": "16.3.6",
+    "next-sanity": "^13.3.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-parallax-tilt": "^1.7.345",
+    "resend": "^6.30.0",
+    "sanity": "^5.31.2",
+    "styled-components": "^6.5.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

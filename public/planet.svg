@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%" shape-rendering="geometricPrecision">
+  <defs>
+    <!-- 1. Sphere Directional Lighting (upper-left light source at ~10:30) -->
+    <radialGradient id="sphereLighting" cx="33%" cy="28%" r="68%" fx="29%" fy="24%">
+      <stop offset="0%" stop-color="#4E5568" />
+      <stop offset="18%" stop-color="#313644" />
+      <stop offset="38%" stop-color="#1B1E27" />
+      <stop offset="65%" stop-color="#0E1017" />
+      <stop offset="85%" stop-color="#05060A" />
+      <stop offset="100%" stop-color="#000000" />
+    </radialGradient>
+
+    <!-- 2. Upper-Left Subtle Specular Reflection -->
+    <radialGradient id="sphereSpecular" cx="30%" cy="24%" r="32%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.32" />
+      <stop offset="35%" stop-color="#22D3EE" stop-opacity="0.14" />
+      <stop offset="70%" stop-color="#22D3EE" stop-opacity="0.02" />
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 3. Rim Ambient Light Reflection on Lower-Left (from glowing ring) -->
+    <radialGradient id="ringBounceLight" cx="24%" cy="58%" r="35%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.16" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 4. Ring Shared Seamless Gradient (left lavender -> center electric blue -> right deep indigo) -->
+    <linearGradient id="ringGradient" x1="-290" y1="-30" x2="290" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A78BFA" />
+      <stop offset="12%" stop-color="#818CF8" />
+      <stop offset="28%" stop-color="#3B82F6" />
+      <stop offset="46%" stop-color="#0066FF" />
+      <stop offset="58%" stop-color="#2563EB" />
+      <stop offset="78%" stop-color="#1E1B4B" />
+      <stop offset="100%" stop-color="#0A0B1E" />
+    </linearGradient>
+
+    <!-- 5. Electric Center Sheen along Front Ribbon Spine -->
+    <linearGradient id="spineGrad" x1="-250" y1="0" x2="250" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#DDD6FE" stop-opacity="0.2" />
+      <stop offset="26%" stop-color="#FFFFFF" stop-opacity="0.85" />
+      <stop offset="50%" stop-color="#38BDF8" stop-opacity="0.95" />
+      <stop offset="76%" stop-color="#60A5FA" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Sphere Boundary Clip -->
+    <clipPath id="sphereClip">
+      <circle cx="0" cy="0" r="160" />
+    </clipPath>
+
+    <!-- Ambient Occlusion Shadow Filters -->
+    <filter id="aoSoft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" />
+    </filter>
+
+    <filter id="aoTight" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" />
+    </filter>
+
+    <!-- Edge Anti-Aliasing Smoothing Filter (1-2px feathering) -->
+    <filter id="featherFilter" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.45" result="smoothed" />
+      <feMerge>
+        <feMergeNode in="smoothed" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g transform="translate(400, 400) rotate(-12.5)" filter="url(#featherFilter)">
+    <!-- 1. Full Seamless Ring (Back & Sides rendered with unbroken evenodd geometry) -->
+    <path d="M -290 0 A 290 126 0 1 0 290 0 A 290 126 0 1 0 -290 0 Z M -198 0 A 198 86 0 1 0 198 0 A 198 86 0 1 0 -198 0 Z" fill="url(#ringGradient)" fill-rule="evenodd" opacity="0.96" />
+
+    <!-- 2. Central Planet Sphere with Multi-Layer Lighting -->
+    <g clip-path="url(#sphereClip)">
+      <!-- Main Directional Shading -->
+      <circle cx="0" cy="0" r="160" fill="url(#sphereLighting)" />
+      
+      <!-- Directional Specular Highlight -->
+      <circle cx="0" cy="0" r="160" fill="url(#sphereSpecular)" />
+      
+      <!-- Ring Bounce Light -->
+      <circle cx="0" cy="0" r="160" fill="url(#ringBounceLight)" />
+
+      <!-- 3. Ambient Occlusion Shadow (Deep contact shadow under ring) -->
+      <path d="M -198 -2 A 198 86 0 0 0 198 -2 L 188.1 10 A 198 96 0 0 1 -188.1 10 Z" fill="#000000" opacity="0.92" filter="url(#aoTight)" />
+
+      <!-- 4. Ambient Occlusion Shadow (Soft diffused shadow falloff onto sphere) -->
+      <path d="M -198 0 A 198 86 0 0 0 198 0 L 178.2 28 A 198 114 0 0 1 -178.2 28 Z" fill="#000000" opacity="0.82" filter="url(#aoSoft)" />
+    </g>
+
+    <!-- 5. Front Half of Ring (sweeping in front of sphere with zero seams at outer tips) -->
+    <path d="M -290 0 A 290 126 0 0 0 290 0 L 198 0 A 198 86 0 0 1 -198 0 Z" fill="url(#ringGradient)" />
+
+    <!-- 6. Vibrant Electric Highlight Spine across Front Ribbon -->
+    <path d="M -231.8 0 A 244.0 106.0 0 0 0 231.8 0" fill="none" stroke="url(#spineGrad)" stroke-width="3" opacity="0.8" stroke-linecap="round" />
+  </g>
+</svg>
