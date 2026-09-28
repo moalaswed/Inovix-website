@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useId, useCallback } from "react";
+import React, { useState, useId, useCallback } from "react";
 
 export interface BudgetSliderProps {
   value?: number;

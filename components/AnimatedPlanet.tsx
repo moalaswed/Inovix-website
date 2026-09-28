@@ -9,7 +9,8 @@ interface AnimatedPlanetProps {
   isRTL?: boolean;
 }
 
-export default function AnimatedPlanet({ isRTL = false }: AnimatedPlanetProps) {
+export default function AnimatedPlanet(props: AnimatedPlanetProps = {}) {
+  void props;
   const [isHovered, setIsHovered] = useState(false);
 
   return (

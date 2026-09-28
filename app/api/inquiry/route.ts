@@ -26,19 +26,9 @@ function isRateLimited(ip: string): boolean {
 const ALLOWED_REQUEST_TYPES = ["consultation", "projectRequest", "serviceRequest"] as const;
 const ALLOWED_CONSULTATION_TYPES = ["website", "mobileApp", "uiux", "general"] as const;
 const ALLOWED_SERVICE_TYPES = ["website", "mobileApp", "design"] as const;
-const ALLOWED_BUDGET_VALUES = [
-  "under-5k",
-  "5k-10k",
-  "10k-25k",
-  "25k-50k",
-  "50k-plus",
-  "not-sure",
-] as const;
-
 type RequestType = (typeof ALLOWED_REQUEST_TYPES)[number];
 type ConsultationType = (typeof ALLOWED_CONSULTATION_TYPES)[number];
 type ServiceType = (typeof ALLOWED_SERVICE_TYPES)[number];
-type BudgetValue = (typeof ALLOWED_BUDGET_VALUES)[number];
 
 /* ─── HTML escape ────────────────────────────────────────────────────────── */
 function escHtml(str: string): string {

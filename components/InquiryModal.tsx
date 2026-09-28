@@ -173,9 +173,8 @@ const inputClass = (hasError: boolean) =>
       : "border-white/10 focus:border-cyan-400/80"
   } text-[#F5F5F5] placeholder-[#4A5568] text-sm outline-none transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] focus:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_0_3px_rgba(34,211,238,0.15)] min-h-[48px]`;
 
-/* ─── Main Modal Component ───────────────────────────────────────────────── */
-export default function InquiryModal() {
-  const { isOpen, closeModal } = useModal();
+/* ─── Inner Dialog Component (mounts fresh on open) ──────────────────────── */
+function InquiryDialog({ closeModal }: { closeModal: () => void }) {
   const { lang, isRTL } = useLanguage();
   const t = translations[lang].modal;
 
@@ -194,26 +193,22 @@ export default function InquiryModal() {
 
   /* ── Body scroll lock ──────────────────────────────────────────────────── */
   useEffect(() => {
-    if (isOpen) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
-  }, [isOpen]);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   /* ── Auto-focus first focusable element ───────────────────────────────── */
   useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        const el = dialogRef.current;
-        if (!el) return;
-        getFocusableElements(el)[0]?.focus();
-      }, 120);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
+    const timer = setTimeout(() => {
+      const el = dialogRef.current;
+      if (!el) return;
+      getFocusableElements(el)[0]?.focus();
+    }, 120);
+    return () => clearTimeout(timer);
+  }, []);
 
   /* ── Focus trap ───────────────────────────────────────────────────────── */
   const handleKeyDown = useCallback(
@@ -347,26 +342,13 @@ export default function InquiryModal() {
     }
   };
 
-  /* ── Reset form on open ────────────────────────────────────────────────── */
-  useEffect(() => {
-    if (!isOpen) return;
-    setValues(INITIAL_VALUES);
-    setBudgetNumeric(DEFAULT_BUDGET_AMOUNT);
-    setErrors({});
-    setSubmitState("idle");
-    setServerError("");
-    setIsSubmitting(false);
-  }, [isOpen]);
-
   const showConsultationFields = values.requestType === "consultation";
   const showProjectFields =
     values.requestType === "projectRequest" ||
     values.requestType === "serviceRequest";
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
+    <>
           {/* ── Backdrop ─────────────────────────────────────────────────── */}
           <motion.div
             key="backdrop"
@@ -822,7 +804,15 @@ export default function InquiryModal() {
             </motion.div>
           </div>
         </>
-      )}
+  );
+}
+
+/* ─── Exported Modal Component (controls mounting lifecycle) ─────────────── */
+export default function InquiryModal() {
+  const { isOpen, closeModal } = useModal();
+  return (
+    <AnimatePresence>
+      {isOpen && <InquiryDialog key="inquiry-dialog" closeModal={closeModal} />}
     </AnimatePresence>
   );
 }

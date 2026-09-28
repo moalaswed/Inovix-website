@@ -15,6 +15,8 @@ const LanguageContext = createContext<LanguageContextType>({
   isRTL: false,
 });
 
+const STORAGE_KEY = "inovix-language";
+
 function getInitialLang(): Language {
   if (typeof window === "undefined") return "en";
   try {
